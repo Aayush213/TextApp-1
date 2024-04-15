@@ -36,6 +36,38 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
+    // Test password strength 
+    private fun getPasswordStrengthMessage(password: String): String {
+        val minLength = 8
+
+        // Check if length is less than 8 chars
+        if(password.length < minLength) {
+            return "Password Error: Entered password is less than $minLength characters"
+        }
+
+        // Check if password has upper case letters
+        if(!password.any { it.isUpperCase() }) {
+            return "Password Error: Entered password must contain at least one upper case letter"
+        }
+
+        // Check if password has lower case letters
+        if(!password.any { it.isLowerCase() }) {
+            return "Password Error: Entered password must contain at least one lower case case letter"
+        }
+
+        // Check if password has digit
+        if(!password.any {it.isDigit()}){
+            return "Password Error: Entered password must contain at least one digit"
+        }
+
+        // Check if password contains at least one special character
+        val specialChars = "!@#$%^&*()_+"
+        if(!password.any {specialChars.contains(it)}) {
+          return "Password Error: Password must contain at least one special character $specialChars"
+        }
+        // Strong password so good to go
+        return ""
+    }
     private fun registerUser() {
         val username_register: EditText = findViewById(R.id.username_register)
         val email_register: EditText = findViewById(R.id.email_register)
@@ -43,6 +75,7 @@ class RegisterActivity : AppCompatActivity() {
         val username: String = username_register.text.toString()
         val email: String = email_register.text.toString()
         val password: String = password_register.text.toString()
+        val passwordStrengthMessage: String = getPasswordStrengthMessage(password)
 
         if (username.equals(""))
         {
@@ -55,6 +88,9 @@ class RegisterActivity : AppCompatActivity() {
         else if (password.equals(""))
         {
             Toast.makeText(this@RegisterActivity, "Enter your Password", Toast.LENGTH_LONG).show()
+        }
+        else if (!passwordStrengthMessage.equals("")){
+            Toast.makeText(this@RegisterActivity, passwordStrengthMessage, Toast.LENGTH_LONG).show()
         }
         else
         {
